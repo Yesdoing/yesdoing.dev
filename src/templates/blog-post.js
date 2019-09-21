@@ -25,21 +25,21 @@ export default ({ data, pageContext, location }) => {
   const post = data.markdownRemark
   const metaData = data.site.siteMetadata
   const { title, comment, siteUrl, author, sponsor } = metaData
-  const { disqusShortName, utterances } = comment
+  // const { disqusShortName, utterances } = comment
 
   return (
     <Layout location={location} title={title}>
       <Head title={post.frontmatter.title} description={post.excerpt} />
       <PostTitle title={post.frontmatter.title} />
       <PostContainer html={post.html} />
-      <SocialShare title={post.frontmatter.title} author={author} />
+      {/* <SocialShare title={post.frontmatter.title} author={author} />
       {!!sponsor.buyMeACoffeeId && (
         <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
-      )}
+      )} */}
       <Elements.Hr />
       <Bio />
       <PostNavigator pageContext={pageContext} />
-      {!!disqusShortName && (
+      {/* {!!disqusShortName && (
         <Disqus
           post={post}
           shortName={disqusShortName}
@@ -47,7 +47,7 @@ export default ({ data, pageContext, location }) => {
           slug={pageContext.slug}
         />
       )}
-      {!!utterances && <Utterences repo={utterances} />}
+      {!!utterances && <Utterences repo={utterances} />} */}
     </Layout>
   )
 }
