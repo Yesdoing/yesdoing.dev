@@ -32,7 +32,7 @@ category: functional programming
 
 - 한마디로 함수 사용을 강조하는 소프트웨어 개발 스타일이다.
 - 단순히 어떤 결과를 만드는 함수를 적용하는 그런 단순한 차원의 문제가 아니라
-- 진짜 목표는 애플리케이션의 **부수효과(side effect)를 방지**하고 **상태 변이(mutation of state)를 감소**하기 위해 **데이터의 제어 흐름과 연산을 추상(abstract)** 하는 것이 핵심이다.
+- 진짜 목표는 애플리케이션의 **부수효과(side effect)를 방지** 하고 **상태 변이(mutation of state)를 감소** 하기 위해 **데이터의 제어 흐름과 연산을 추상(abstract)** 하는 것이 핵심이다.
 - 함수형의 함수는 단순한 스칼라 값이 아닌, 특정 기능을 함수에 추가하여 매개변수로 전달하는, 다시 말해 함수를 매개변수화 하는 전혀 다른 차원의 과정을 떠올여야한다.
 - FP는 여러 함수를 서로 합성하고 평가해서 더 많은 기능을 탑재하는 것이 유일한 목표다.
 - FP는 선언적 개발 방식이다.
@@ -53,53 +53,55 @@ category: functional programming
 
   - 명령형으로 짠 코드
 
-    var array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    for(let i = 0; i < array.length; i++) {
-    array[i] = Math.pow(array[i], 2);
+    ```javascript
+    var array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    for (let i = 0; i < array.length; i++) {
+      array[i] = Math.pow(array[i], 2)
     }
 
-    array;
+    array
+    ```
 
   - 명령형 프로그래밍은 컴퓨터에게 원하는 작업(루프를 반복하면서 각 숫자의 제곱수를 계산)을 **어떻게** 하는지 상세히 이른다.
 
   - 선언적 프로그래밍
 
-    - 프로그램의 **서술부(description)**와 **평가부(evaluation)**를 분리하여, **제어 흐름이나 상태 변화를 특정하지 않고도** 프로그램 로직이 무엇인지를 표현식(expression)으로 나타낸다.
+    - 프로그램의 **서술부(description)** 와 **평가부(evaluation)** 를 분리하여, **제어 흐름이나 상태 변화를 특정하지 않고도** 프로그램 로직이 무엇인지를 표현식(expression)으로 나타낸다.
     - SQL 구문도 선언적 프로그래밍의 한 예이다. 데이터를 실제로 가져오는 내부 메커니즘은 **추상**한 상태에서 그 결과가 어떻게 나와야하는지를 구문으로 서술한다.
 
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-      function(num) {
-      return Math.pow(num, 2);
-      }
-      );
-
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map( num => Math.pow(num, 2));
+      ```javascript
+      ;[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function(num) {
+        return Math.pow(num, 2)
+      })
+      ;[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => Math.pow(num, 2))
+      ```
 
     - 이전 코드와 비교하면 루프 카운터를 관리하고 배열 인덱스에 정확하게 접근하는 일 따위는 개발자가 신경 쓰지 않아도 되 부담이 줄어든다.
     - 일반 루프는 함수로 추상하지 않는 한 재사용 자체가 안된다.
     - 루프를 제거해야 하는 이유는 재 사용하기도 힘들고, 다른 연산에 끼워 넣기도 어려운 명령형 제어 구조물 이며, 반복할 때마다 값이나 상태를 계속 바뀌기 때문이다.
-    - 함수형 프로그램은 **무상태성(statelessness)**과 **불변성(immutability)**을 지향한다.
+    - 함수형 프로그램은 **무상태성(statelessness)** 과 **불변성(immutability)** 을 지향한다.
 
   ### 순수함수와 부수효과
 
-  - 함수형 프로그래밍은 **순수함수**로 구성된 불변 프로그램 구축을 전제로 한다.
+  - 함수형 프로그래밍은 **순수함수** 로 구성된 불변 프로그램 구축을 전제로 한다.
   - 순수함수의 특성
 
-    - 주어진 입력에만 의존할 뿐, 평가 도중 또는 호출 간 변경될 수 있는 숨겨진 값이나 외부 상태와 **무관하게 작동**해야 한다.
+    - 주어진 입력에만 의존할 뿐, 평가 도중 또는 호출 간 변경될 수 있는 숨겨진 값이나 외부 상태와 **무관하게 작동** 해야 한다.
     - 전역 객체나 레퍼런스로 전달된 매개변수를 수정하는 등 함수 스코프 밖에서 어떠한 변경도 일으키지 않아야 한다.
     - 위 조건들이 성립되지 않는 함수는 **불순(impure)** 하다고 말한다.
     - 명령형 프로그래밍에서는 변수가 한 구문에서 다른 구문으로 옮겨지면서 그 값이 변하는 것이 기본이다.
     - 불순 함수의 예
-
-      var counter = 0; // 스코프 밖의 변수를 변경함
+      ```javascript
+      var counter = 0 // 스코프 밖의 변수를 변경함
       function increment() {
-      return ++counter;
+        return ++counter
       }
-
+      ```
     - `Date.now()` 같은 날짜/시간 함수 역시 일정한 결과 값을 내지 않기 때문에 순수 함수가 아니다.
     - 여기서 counter는 **암시적(implicit) 전역 변수**(브라우저에서는 `window` 객체)를 통해 접근한다.
     - `this` 키워드를 거쳐 인스턴스 데이터에 접근하는 것 역시 부수효과가 유발되는 흔한 예이다.
     - JS의 `this` 는 해당 함수의 런타임 콘텍스트에 따라 달라진다. 이 상황을 부수효과가 발생하는 상황이라고 한다.
+
     - 부수효과가 발생하는 상황
 
       - 전역 범위에서 변수, 속성, 자료구조를 변경
@@ -111,19 +113,23 @@ category: functional programming
 
     - 함수형 프로그래밍은 모든 상태 변이를 근절하자는 건 아니고, **상태 변이를 줄이고** 관리할 수 있는 프레임워크를 제공하여 **순수/불순 함수를 구분** 하자는 것이다.
 
+      ```javascript
       function showStudent(ssn) {
-      let student = db.find(ssn);
-      if(student !== null) {
-      document.querySelector(`${elementId}`).innerHTML = `${student.ssn}, ${student.firstname}, ${student.lastname}`;
-      } else {
-      throw new Error('학생을 찾을 수 없습니다!');
-      }
+        let student = db.find(ssn)
+        if (student !== null) {
+          document.querySelector(`${elementId}`).innerHTML = `${student.ssn}, ${
+            student.firstname
+          }, ${student.lastname}`
+        } else {
+          throw new Error('학생을 찾을 수 없습니다!')
+        }
       }
 
-      showStudent('444-44-4444');
+      showStudent('444-44-4444')
+      ```
 
     - 이 함수는 함수 내부에 사용하는 여러가지 전역 변수들을 사용하므로 코드가 유연하지 않고 다루기가 힘들뿐더러 테스트 역시 어렵다.
-    - 순수함수는 **서명에 매개변수(formal parameter- 입력집합)를 빠짐없이 명시**하므로 코드를 이해하고 사용하기가 쉽다.
+    - 순수함수는 **서명에 매개변수(formal parameter- 입력집합)를 빠짐없이 명시** 하므로 코드를 이해하고 사용하기가 쉽다.
 
     - 위 함수를 다음과 같이 개선할 수 있다.
       - 긴 함수를 하나의 목적을 가진 짧은 함수로 각각 분리한다.
@@ -134,38 +140,41 @@ category: functional programming
        - 커링(currying)을 사용한다.
        - 커링이란 함수의 여러 인수를 부분적으로 나누어 세팅하는 것.
 
-       var find = curry((db, id) => {
-       let obj = db.find(id);
-       if (obj === null) {
-       throw new Error('객체를 찾을 수 없습니다!');
-       }
-       return obj;
-       })
+    ```javascript
+    var find = curry((db, id) => {
+      let obj = db.find(id)
+      if (obj === null) {
+        throw new Error('객체를 찾을 수 없습니다!')
+      }
+      return obj
+    })
 
-       var csv = student => `${student.ssn}, ${student.firstname}, ${student.lastname}`;
+    var csv = student =>
+      `${student.ssn}, ${student.firstname}, ${student.lastname}`
 
-       var append = curry((selector, info) => {
-       document.querySelector(selector).innerHTML = info;
-       });
+    var append = curry((selector, info) => {
+      document.querySelector(selector).innerHTML = info
+    })
+    ```
 
     - 재사용 가능한 컴포넌트 3개로 나뉘어 코드가 훨씬 유연해졌다.
     - 이렇게 잘게 나뉜 함수를 재사용하면 신경 써서 관리할 코드 크기가 확 줄기 때문에 생산성을 높일 수 있다.
     - 프로그램이 해야 할 일들을 고수준에서 단계별로 명확하게 보여주는 선언적 스타일을 따르므로 코드 가독성이 향상 된다.
     - 무엇보다 중요한 건, HTML 객체와의 상호작용을 자체 함수로 빼내어 순수하지 않은(불순한) 로직을 순수함수에서 배제했다는 점이다.
-    - find 함수를 보면 예외를 내는 별도의 null 체크 분기문이 포함되어 있다. 이처럼 함수가 일관된 반환값을 보장하도록 해서 전체 함수 결과를 예측 가능한 방향으로 유도하면 여러모로 이롭다. 이는 참조 투명성(referential transparency) 이라는 순수함수 본연의 특징이다.
+    - find 함수를 보면 예외를 내는 별도의 null 체크 분기문이 포함되어 있다. 이처럼 함수가 일관된 반환값을 보장하도록 해서 전체 함수 결과를 예측 가능한 방향으로 유도하면 여러모로 이롭다. 이는 **참조 투명성(referential transparency)** 이라는 순수함수 본연의 특징이다.
 
     ### 참조 투명성과 치환성
 
-    - 참조 투명성은 순수함수를 정의하는 좀 더 공식적인 방법이며, 여기서 순수성(purity)이란 **함수의 인수와 결괏값 사이의 순수한 매핑 관계**를 의미한다.
-    - 어떤 함수가 동일한 입력을 받았을 때 동일한 결과를 내면 이를 참조 투명한 함수라고 한다.
-
-      var sum = (total, current) => total + current;
-      var total = arr => arr.reduce(sum);
-      var size = arr => arr.length;
-      var divide = (a, b) => a / b;
-      var average = arr => divide(total(arr), size(arr));
-      average(input);
-
+    - 참조 투명성은 순수함수를 정의하는 좀 더 공식적인 방법이며, 여기서 순수성(purity)이란 **함수의 인수와 결괏값 사이의 순수한 매핑 관계** 를 의미한다.
+    - **어떤 함수가 동일한 입력을 받았을 때 동일한 결과를 내면 이를 참조 투명한 함수라고 한다.**
+      ```javascript
+      var sum = (total, current) => total + current
+      var total = arr => arr.reduce(sum)
+      var size = arr => arr.length
+      var divide = (a, b) => a / b
+      var average = arr => divide(total(arr), size(arr))
+      average(input)
+      ```
     - 함수 인수를 전부 명확하게 정의하면 스칼라 값을 비롯해 대부분의 경우 부수효과를 예방할 수 있지만, 객체를 레퍼런스로 넘길 때 실수로 객체에 변이를 일으키지 않도록 주의해야 한다.
 
     ### 불변 데이터 유지하기
@@ -173,17 +182,15 @@ category: functional programming
     - 불변 데이터는 한번 생성된 후에는 절대 바뀌지 않는다.
     - 문자열, 숫자 등 자바스크립트의 모든 기본형(primitive type 원시 자료형)은 처음부터 불변이다.
     - 배열 등의 객체는 불변이 아니어서 함수 인수로 전달해도 원래 내용이 변경되어 부수효과가 발생할 소지는 남아 있다.
-
+      ```javascript
       var sortDesc = arr => {
-      arr.sort(
-      (a,b) => b - a
-      );
-      };
-
+        arr.sort((a, b) => b - a)
+      }
+      ```
     - 위 코드는 Array.sort가 원본 레퍼런스가 가리키는 배열의 원소를 정렬하는 부수효과를 일으킨다.
 
     - 함수형 프로그래밍은, 외부에서 관찰 가능한 부수 효과가 제거된 불변 프로그램을 작성하기 위해 순수 함수를 선언적으로 평가하는 것이다.
-    - 함수를 순수 연산의 관점에서 데이터를 절대 변경하지 않는 **고정된 작업 단위(unit of work)**로 바라본다면 확실히 잠재적인 버그는 줄게 될 것 이다.
+    - 함수를 순수 연산의 관점에서 데이터를 절대 변경하지 않는 **고정된 작업 단위(unit of work)** 로 바라본다면 확실히 잠재적인 버그는 줄게 될 것 이다.
 
   ## 함수형 프로그래밍의 좋은 점
 
@@ -196,13 +203,13 @@ category: functional programming
 
   - fp를 고수준에서 보면, 사실상 분해(프로그램을 작은 조각들로 쪼갬)와 합성(작은 조각들을 다시 합침) 간의 상호작용이라 할 수 있다. 이러한 양면성(duality) 덕분에 함수형 프로그램은 모듈적으로, 효율적으로 동작한다.
   - **모듈성의 단위, 작업 단위는 바로 함수 자신입니다.**
-  - 위에서 showStudent 함수는 find, csv, append 함수 3가지로 분리되었다.
-  - 필요하다면 이렇게 나뉜 하위 작업을 더 단순한 순수함수로 **분해**해서 **독립적인 작업 단위**로 나타낼 수 있다.
+  - 위에서 `showStudent` 함수는 `find`, `csv`, `append` 함수 3가지로 분리되었다.
+  - 필요하다면 이렇게 나뉜 하위 작업을 더 단순한 순수함수로 **분해** 해서 **독립적인 작업 단위** 로 나타낼 수 있다.
   - FP에서 모듈화는 **단일성**의 원리와 밀접한 관련이 있다.
     - 단일성의 원리란 함수는 저마다 한 가지 목표만을 바라봐야 한다는 사상이다.
   - 함수의 인수가 적다고 단순한 코드라는 것은 아니지만 함수의 인수가 많아지면 보통 복잡한 코드가 된다.
-  - 위의 run이라는 함수는 fp에서 가장 중요한 **합성(composition)**이라는 기법을 구현한 함수로, 두 함수를 합성하면 첫 번째 함수의 결과를 다음 함수에 밀어 넣는 새로운 함수가 탄생한다.
-  - f • g = f(g(x)) ⇒ f 합성 g 라고 읽는다.
+  - 위의 run이라는 함수는 fp에서 가장 중요한 **합성(composition)** 이라는 기법을 구현한 함수로, 두 함수를 합성하면 첫 번째 함수의 결과를 다음 함수에 밀어 넣는 새로운 함수가 탄생한다.
+  - `f • g = f(g(x))` ⇒ f 합성 g 라고 읽는다.
   - g의 반환값과 f의 인수 간에 느슨하고 형식 안전한 관계가 맺어진다.
   - 함수형으로 합성한 코드는 전체 표현식의 의미를 개별 조각의 의미에서 추론할 수 있다.
   - 합성 함수는 다른 함수를 인수로 받으므로 고계함수(higher-order-function)라고 한다. 부드럽게 흘러가는 모듈적인 코드를 작성하는 방법이 합성만 있는 건 아니다.
@@ -213,26 +220,28 @@ category: functional programming
   - 체인은 함수형은 물론 리액티브 자바스크립트 라이브러리에서도 활발히 쓰인다.
   - 명령형으로 짠 예제
 
+    ```javascript
     let enrollment = [
-    {enrolled: 2, grade: 100},
-    {enrolled: 2, grade: 80},
-    {enrolled: 1, grade: 89},
-    ];
+      { enrolled: 2, grade: 100 },
+      { enrolled: 2, grade: 80 },
+      { enrolled: 1, grade: 89 },
+    ]
 
     // 명령형으로 짠 코드
-    var totalGrades = 0;
-    var totalStudentsFound = 0;
-    for(let i = 0; i < enrollment.length; i++) {
-    let student = enrollment[i];
-    if(student !== null) {
-    if(student.enrolled > 1) {
-    totalGrades += student.grade;
-    totalStudentsFound++;
-    }
-    }
+    var totalGrades = 0
+    var totalStudentsFound = 0
+    for (let i = 0; i < enrollment.length; i++) {
+      let student = enrollment[i]
+      if (student !== null) {
+        if (student.enrolled > 1) {
+          totalGrades += student.grade
+          totalStudentsFound++
+        }
+      }
     }
 
-    var average = totalGrades / totalStudentsFound;
+    var average = totalGrades / totalStudentsFound
+    ```
 
   - 함수형으로 이 문제를 분해하면 대략 3가지 단계를 거쳐야 한다.
 
